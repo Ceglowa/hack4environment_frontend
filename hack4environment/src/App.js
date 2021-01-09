@@ -6,12 +6,14 @@ import points from './points';
 import L from 'leaflet'
 import hulls from './hulls'
 import Sidebar from "react-sidebar";
+import { SlidingPanel } from 'react-sliding-side-panel';
+import Table from 'rc-table';
 
 const center = [50.72698333, -1.74063611]
 const purpleOptions = { color: 'purple' }
 
 
-function Hull() {
+function Hull({setOpenPanel}) {
   const onEachFeature = (feature, layer) => {
     layer.on({
       click: () => clickToFeature(feature, layer)
@@ -20,9 +22,9 @@ function Hull() {
 
   const clickToFeature = (feature, layer) => {
      setOpenPanel(true);
-     setClusterID(feature.properties.cluster); 
-     setData(feature.properties.trash_data);
-     setTrashCount(feature.properties.trash_count);
+    //  setClusterID(feature.properties.cluster); 
+    //  setData(feature.properties.trash_data);
+    //  setTrashCount(feature.properties.trash_count);
      console.log("I clicked on " , feature.properties.cluster);
   }
  
@@ -98,7 +100,7 @@ function App() {
             A pretty CSS3 popup. <br /> Easily customizable.
           </Popup>
         </Marker>
-        <Hull></Hull>
+        <Hull setOpenPanel={setOpenPanel}></Hull>
         <FeatureGroup>
           <GeoJSON
             data={points} pointToLayer={pointToLayer}>
