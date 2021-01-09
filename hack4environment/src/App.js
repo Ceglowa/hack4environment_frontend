@@ -33,7 +33,7 @@ const columns = [
   }
 ];
 
-function Hull({setOpenPanel}) {
+function Hull({setOpenPanel, setClusterID, setData, setTrashCount}) {
   const onEachFeature = (feature, layer) => {
     layer.on({
       click: () => clickToFeature(feature, layer)
@@ -42,9 +42,9 @@ function Hull({setOpenPanel}) {
 
   const clickToFeature = (feature, layer) => {
      setOpenPanel(true);
-    //  setClusterID(feature.properties.cluster); 
-    //  setData(feature.properties.trash_data);
-    //  setTrashCount(feature.properties.trash_count);
+     setClusterID(feature.properties.cluster); 
+     setData(feature.properties.trash_data);
+     setTrashCount(feature.properties.trash_count);
      console.log("I clicked on " , feature.properties.cluster);
   }
  
@@ -65,7 +65,6 @@ function Hull({setOpenPanel}) {
       onEachFeature={onEachFeature}
       style = {styl}
     />
-    <Popup>Popup in FeatureGroup</Popup>
   </FeatureGroup>
 }
 function App() {
@@ -97,11 +96,6 @@ function App() {
     return marker
   }
 
-  const onSetSidebarOpen = (open) => {
-    this.setState({ sidebarOpen: open });
-  }
-
-  const [visible, setVisible] = useState(false);
   
   const [openPanel, setOpenPanel] = useState(false);
   const [clusterID, setClusterID] = useState(0);
@@ -110,7 +104,24 @@ function App() {
 
   return (
     <div className="App">
-      <MapContainer center={center} zoom={20} scrollWheelZoom={false} style={{height : '100vh'}}>
+      <Sidebar style={{width: "20vw"}}
+        sidebar={<div>
+          <p>{trashCount}</p>
+          <Table
+            columns={columns}
+            data={clusterData}
+            tableLayout="auto"
+          />
+
+        </div>}
+        open={openPanel}
+        pullRight={true}
+        onSetOpen={setOpenPanel}
+        styles={{ sidebar: { background: "white" } }}
+      >
+        
+      </Sidebar>
+      <MapContainer center={center} zoom={20} scrollWheelZoom={false} style={{height: "100vh", width: "87vw"}}>
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -120,31 +131,15 @@ function App() {
             A pretty CSS3 popup. <br /> Easily customizable.
           </Popup>
         </Marker>
-        <Hull setOpenPanel={setOpenPanel}></Hull>
+        <Hull setOpenPanel={setOpenPanel} setClusterID={setClusterID} setData={setData} setTrashCount={setTrashCount}></Hull>
         <FeatureGroup>
           <GeoJSON
             data={points} pointToLayer={pointToLayer}>
             </GeoJSON>
         </FeatureGroup>
+        
       </MapContainer>
 
-      <SlidingPanel
-        type={'right'}
-        isOpen={openPanel}
-        size={30}
-      >
-        <div className="panel-container">
-          <p>{trashCount}</p>
-          <Table
-            columns={columns}
-            data={clusterData}
-            tableLayout="auto"
-          />
-          <p></p>
-          <button onClick={() => setOpenPanel(false)}>close</button>
-
-        </div>
-      </SlidingPanel>
     </div>
   );
 }
