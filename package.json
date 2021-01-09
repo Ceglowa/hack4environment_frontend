@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@material-ui/core": "^4.11.2",
     "leaflet": "^1.7.1",
     "react-sidebar": "^3.0.2",
     "react-sliding-side-panel": "^2.0.3"
