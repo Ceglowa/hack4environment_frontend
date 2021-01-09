@@ -19,6 +19,10 @@ function Hull() {
   }
 
   const clickToFeature = (feature, layer) => {
+     setOpenPanel(true);
+     setClusterID(feature.properties.cluster); 
+     setData(feature.properties.trash_data);
+     setTrashCount(feature.properties.trash_count);
      console.log("I clicked on " , feature.properties.cluster);
   }
  
@@ -75,7 +79,12 @@ function App() {
     this.setState({ sidebarOpen: open });
   }
 
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(false);
+  
+  const [openPanel, setOpenPanel] = useState(false);
+  const [clusterID, setClusterID] = useState(0);
+  const [clusterData, setData] = useState([]);
+  const [trashCount, setTrashCount] = useState(0);
 
   return (
     <div className="App">
@@ -96,6 +105,24 @@ function App() {
             </GeoJSON>
         </FeatureGroup>
       </MapContainer>
+
+      <SlidingPanel
+        type={'right'}
+        isOpen={openPanel}
+        size={30}
+      >
+        <div className="panel-container">
+          <p> CLuster iddd</p>
+          <Table
+            columns={columns}
+            data={clusterData}
+            tableLayout="auto"
+          />
+          <p></p>
+          <button onClick={() => setOpenPanel(false)}>close</button>
+
+        </div>
+      </SlidingPanel>
     </div>
   );
 }
