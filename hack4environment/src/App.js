@@ -12,6 +12,26 @@ import Table from 'rc-table';
 const center = [50.72698333, -1.74063611]
 const purpleOptions = { color: 'purple' }
 
+const columns = [
+  {
+    title: "Typ odpadów do segregacji",
+    dataIndex: "trash_type",
+    key: "trash_type",
+    width: 100,
+  },
+  {
+    title: "Nazwa odpadu",
+    dataIndex: "category",
+    key: "category",
+    width: 100,
+  },
+  {
+    title: "Ilość odpadu",
+    dataIndex: "count",
+    key: "count",
+    width: 100,
+  }
+];
 
 function Hull({setOpenPanel}) {
   const onEachFeature = (feature, layer) => {
@@ -114,7 +134,7 @@ function App() {
         size={30}
       >
         <div className="panel-container">
-          <p> CLuster iddd</p>
+          <p>{trashCount}</p>
           <Table
             columns={columns}
             data={clusterData}
